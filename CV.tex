@@ -1,0 +1,359 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %%
+%% LaTeX to get the ``??'' replaced with the number of the last page  %%
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc,txfonts,engord}
+
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\vspace{-\baselineskip}\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.0in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{compactitem}[#1]}
+        {\end{compactitem}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Dr Joseph Reddington}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{2.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+     \textit{Mobile:} 07703683028 & \textit{E-mail:} {joe@joereddington.com}
+\end{tabular}
+
+\section{Appointments}
+
+\vspace{-0.75cm}
+\begin{outerlist}
+
+%\item[] {{\bf Postdoctoral Research Associate, School of Computing, Teesside University}} \hfill {4/2011-present}\\
+%I undertook research relevant to the areas of interactive storytelling and systems for augmented reality.  This included emotional structure and use of Artificial intelligence techniques such as automated planning. 
+%\item[] {\bf Research Assistant, Royal Holloway} \hfill 05/2011-present \\
+%As part of the PLanCompS Project I work mainly on language specification, validation, creation of tools, and implementation of the open-access repository. The project goal is to dramatically lower the effort of giving formal specifications of larger languages, and increase the tangible benefits of doing so. My responsibilities focus on the design and implementation of tools to support creation and checking of  language specifications, and generation of prototype implementations from them
+
+
+\item[] {\bf Founder, eQuality Time LTD} \hfill 09/2014- \\
+In 2014 I started the social enterprise, later charity, eQuality Time, which  looks at ways that technology can make a difference to social problems. We have funded projects addressing new approaches to English as a Foreign language, Child Literacy and Communication Disability. 
+
+
+\item[] {\bf Research Assistant, Royal Holloway} \hfill 08/2011-09/2014 \\
+I designed and built the back-ends of interpreters for Caml-Light and C and created and released a selection of Eclipse plugins that provided editors for domain specific languages.  The PLanCompS project goal was to dramatically lower the effort of giving formal specifications of larger languages, and increase the tangible benefits of doing so. In more minor responsibilities I maintained the project version control system along with the website and other system administration duties.  
+
+\item[] {\bf  Research Associate, School of Computing, Teesside University} \hfill 03/2011-08/2011} \\
+I undertook research relevant to the areas of interactive storytelling and systems for augmented reality. This included emotional structure and use of Artificial intelligence techniques such as automated planning.
+
+\item[] {\bf Teaching Fellow/Visiting Lecturer, Royal Holloway} \hfill 11/2010-03/2011 \\
+As a part time Teaching Fellow  I taught the postgraduate course `People and technology' for the iCOM centre.  I spent my remaining time as a Visiting Lecturer for the Computer Science department where I taught the 2\textsuperscript{nd} year computer science course `Algorithms and complexity'. As a result of this work, I received the college excellence teaching prize for 2010/2011. 
+
+\item[] {\bf Research Assistant, Computer Science, Aberdeen University} \hfill {2/2010-10/2010}\\
+    The `How was school today\ldots?' project  mined sensor data to develop systems that automatically add new content to speech aids used by disabled children. I had overall responsibility for designing and deploying the wireless system used to track children around schools, as well as the integration of the overall system.  I contributed to a number of research publications and traveled to Pittsburgh to discuss our research with project partners. The post also extended to cover supervision a final year project students with game-design projects and teaching several short courses in basic information technology. 
+    
+
+\item[] {\bf Research Assistant, iCOM Centre, Royal Holloway}
+\hfill 9/2009-1/2010\\
+As part of a cross-disciplinary research group examining multi-modal interfaces, augmented reality and video conferencing I developed a series of  videoconferencing tools in Java and went on to build  some proof-of-concept robotic systems.  
+
+\item[] {\bf Analyst Programmer, QCC Information Security} \hfill {6/2009-9/2009}\\
+Working within a team of software engineers I produced tools and developed processes to support extraction and interpretation of user data. This included strong experience in commercial software engineering with C\#,  and javascript.  This supported such activities as evidence capture from seized computers and mobile phones, tracking of mobile phones by cell signal, and penetration testing.  During an end-to-end review of the forensic reporting procedures I gained a thorough understanding of the open questions and challenges in digital forensics.  
+
+%\item[] {\bf Project Lead: Project TooManyCooks, Royal Holloway} \hfill {Spring 2009}\\
+%To test the idea that software design principles could be used to speed up the writing of novels, plays, or film scripts I ran experiments that had ten volunteers collaboratively write a novel that matched a given specification within seven days. This project included research into the structure of a narrative and the development of software tools to aid the construction of a story. I applied for further funding (to a total of \textsterling11,500 from several sources) that allowed me to spend several months working full-time  to refine the techniques and put together applications for research grants. For my team's work with undergraduates we received the Royal Holloway Team Teaching Award for 2009/2010.
+
+%\item[] {\bf Research Assistant, Theory of Computing Group, Royal Holloway} \hfill  9/2008-5/2009\\
+%Continuing my work with customised instruction sets I created a results database that enabled other research groups to accurately compare experiments and also produced a number of papers.
+%
+
+
+\item[] {\bf IT Tutor, Royal Holloway}\hfill 9/2007-6/2009\\
+As an IT tutor I delivered  specially tailored IT training sessions across a wide range of areas to university staff and students. I later specialised in training students from the Health and Social Care department to achieve their mandatory ECDL qualification.  I prepared and delivered a variety of specialised teaching programs including a full-time, two week course.  For my work with the computer centre I received the postgraduate teaching prize for 2008/2009.
+
+\end{outerlist}
+
+\section{Education}
+%
+{\textbf{Royal Holloway College, University of London}},
+\begin{outerlist}
+
+\item[] {\bf Ph.D. Computer Science},
+             \hfill 2004-2009
+
+Title: Instruction Selection for customisable processors\\
+Supervisors: Prof.\ E.\ Scott and Prof.\ A.\ Johnstone\\
+Working as part of the Theory of Computing Group I developed improvements to algorithms generating new instruction sets for reconfigurable hardware. %Areas of interest included:
+%    \begin{innerlist}
+%  \item  implementation of a rule-based code-generator;
+%    \item  the design and simulation of the 8-bit processor 'Skippy' at transistor level, including the design of assembler language and compiler;
+%    \item  design and implementation of multiple algorithms for candidate instruction enumeration, with proofs of correctness and time-complexity.
+%        \end{innerlist}
+
+\item[] {\bf Postgraduate Certificate in Skills to Inspire Learning},\hfill 2004-2005\\
+Portfolio subject: Small group exercises for teaching Java.
+
+\item[] {\bf B.Sc. Computer Science with Communications, First class (Hons)},  \hfill 2001-2004
+
+Dissertation project: Simulation of TCP flow control methods in Java.
+\end{outerlist}
+
+\section{Publications} \begin{bibsection}
+
+\subsection*{Journal papers and book chapters}
+\item{\em J. Reddington, The Domesday Project: an open dataset for AAC provision, Journal of Intellectual Disability, 2013}
+
+\item{\em L. Coles-Kemp, and J.Reddington, Not So Liminal Now: The Importance of Designing Privacy Features Across a Spectrum of Use, Chapter in Digital Enlightenment Forum yearbook 2013: the value of personal data, IOS Press, 2013}
+
+\item{\em G. Gutin, A. Johnstone, J. Reddington, E. Scott, and A. Yeo, An algorithm for finding input–output constrained convex sets in an acyclic digraph, Journal of Discrete Algorithms, 2012}
+
+\item{\em J. Reddington and K.Atasu, On the complexity of instruction set selection algorithms, IEEE Transactions on Very Large Scale Integration (VLSI) Systems, 2011} 
+
+\item{\em L. Coles-Kemp, J. Reddington,  and P. Williams, Looking at clouds from both sides: The advantages and disadvantages of placing personal narratives in the cloud, Information Security Technical Report, 2011}
+
+\item {\em F. Murtagh, A. Ganz, and J. Reddington, New Methods of Analysis of Narrative and Semantics in Support of Interactivity, Entertainment Computing, 2011}
+
+\item {\em P. Balister, S. Gerke, G. Gutin, A. Johnstone, J. Reddington, E. Scott, A. Soleimanfallah and A. Yeo, Algorithms for generating convex sets in acyclic digraphs. Journal of Discrete Algorithms 7 (2009)}
+
+
+\subsection*{Conference papers}
+
+\item{\em J. Reddington, Episode clustering in Interactive Storytelling, to appear, 2014}
+\item{\em J. Reddington, Failed a roll: the Caml-Light Grammar under the microscope, to appear, 2015}
+
+\item{\em J.Reddington, Standing on the shoulders of giants: attacking the meta-problems of technical AAC research, SLPAT 2014}
+
+
+\item{\em J. Reddington, D. Cowie and F. Murtagh, Computational Properties of Fiction Writing and Collaborative Work, IDA2013, 2013}
+
+\item{\em  J. Reddington and N. Tintarev,  Automatically Generating Stories from Sensor Data,  Proceedings of the 15th international conference on Intelligent user interfaces - IUI '11. pp. 407} 
+
+\item{\em J. Reddington and L. Coles-Kemp,  Trap Hunting: Finding Personal Data Management Issues in Next Generation AAC Devices, Second Workshop on Speech and Language Processing for Assistive Technologies (SLPAT), 2011} 
+
+\item {\em R. Black, J. Reddington, E. Reiter, N. Tintarev, and A. Waller,  A Mobile Phone Based Personal Narrative System, The 12th International ACM SIGACCESS Conference on Computers and Accessibility, 2011}
+
+\item{\em N.Tintarev and J.Reddington,  Ubiquitous User Modeling for a Complex Communication Aid, Ubiquitous User Modeling Workshop. Haifa, Israel. 2011} 
+
+\item {\em F. Murtagh, A. Ganz, and J. Reddington, Semantics of narrative in collective, distributed problem-solving environments, International conference on Correspondence Analysis and Related Methods  (CARME), 2011}
+
+
+\item {\em J. Reddington and N. Tintarev, Automatically Generating Stories from Sensor Data, Proc. International Conference on Intelligent User Interfaces (IUI), 2011}
+
+\item {\em N. Tintarev, J. Reddington,  E. Reiter, R.. Black, A. Waller,  “Hands Busy, Eyes Busy”: Generating Stories from Sensor Data for Automotive applications.  The 3rd  International Workshop on Multimodal Interfaces for Automotive Applications (MIAA), 2011}
+
+\item {\em R. Black, J. Reddington, E. Reiter, N. Tintarev, and A. Waller, Using NLG and Sensors to Support Personal Narrative for Children with Complex Communication Needs, Proc.  SLPAT at NAACL HLT 2010}
+
+\item {\em J. Reddington, G. Gutin, A. Johnstone, E. Scott, and A. Yeo, Better than optimal: fast identification of custom instruction candidates, Proc. 7th IEEE/IFIP International Conference on Embedded and Ubiquitous Computing, 2009}
+
+\item {\em G. Gutin, A. Johnstone, J. Reddington, E. Scott, and A. Yeo, An algorithm for finding input-output constrained convex sets in an acyclic digraph, Proc.\ WG08, Lect.\ Notes Comput.\ Sci.\ 5344, 2008}
+
+\item {\em G. Gutin, A. Johnstone, J. Reddington, E. Scott, A. Soleimanfallah, and A. Yeo, An algorithm for finding connected convex subgraphs of an acyclic digraph. In `Algorithms and Complexity in Durham, 2007', College Publications, 2008}
+
+%\item {\em J. Reddington, E. Reiter, N. Tintarev, R. Black, and A. Waller. Using NLG and Sensors to Support Personal Narrative (poster, to appear) Digital Economy All Hands Meeting - Digital Futures 
+%}
+\end{bibsection}
+
+
+\section{Awards}
+{\textbf{Royal Holloway College, University of London}},
+\begin{innerlist}
+\item {Postgraduate Tutor Prize 2008/2009}  (shared with another tutor), 
+\item  {Team Teaching Prize 2009/2010}, 
+\item {Teaching Excellence Prize 2010/2011}, 
+\end{innerlist}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
